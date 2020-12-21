@@ -1,0 +1,5 @@
+.terraform
+my-key.pem
+terraform.tfstate
+terraform.tfstate.backup
+ubuntu@18.219.113.170
