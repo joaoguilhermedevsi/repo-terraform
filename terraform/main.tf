@@ -200,7 +200,7 @@ resource "aws_security_group" "db" {
 
 module "iam" {
   source   = "./iam"
-  username = ["tray20202412", "ronaldsilva20202412", "andre241201"]
+  username = ["t20202412", "20202412", "andre241201"]
 }
 
 
