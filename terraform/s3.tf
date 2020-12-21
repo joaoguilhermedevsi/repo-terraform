@@ -24,7 +24,7 @@ resource "aws_s3_bucket" "my-test-bucket" {
   }
 
   tags = {
-    Name = "tray-ecommerce"
+    Name = "nametesting"
   }
 }
 
