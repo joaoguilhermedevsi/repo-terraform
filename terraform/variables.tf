@@ -23,16 +23,16 @@ variable "private_a_cidr_block" {
 }
 
 variable "ami" {
-  default = "ami-0918a3f7593b42b0d"
+  default = ""
   
 }
 
 variable "instance_type" {
-  default = "t2.medium"
+  default = ""
 }
 
 variable "key_pair" {
-  default = "tray-ecommerce"
+  default = ""
 }
 
 
@@ -46,7 +46,7 @@ variable "domain" {
 
 
 variable "s3_bucket_name" {
-default = "bucket-tray-ecommerce"
+default = ""
 
 }
 
