@@ -90,6 +90,6 @@ resource "aws_instance" "Aplicacao" {
   availability_zone = "${var.region}b"
 
 tags = {
-  Name = "Hellow Tray"
+  Name = "testing"
 }
 }
