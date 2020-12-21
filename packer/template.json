@@ -2,7 +2,7 @@
 
 
   "variables": {
-    "application_name": "tray-ecommerce",
+    "application_name": "testing",
     "image": "ubuntu18.04",
     "application_environment": "teste",
     "aws_region": "us-east-1"
@@ -32,7 +32,7 @@
         },
       "instance_type": "t2.micro",
       "ssh_username": "ubuntu",
-      "ami_name": "tray-ecommerce {{timestamp}}",
+      "ami_name": "testing {{timestamp}}",
       "ami_description": "from {{.SourceAMI}}",
       "tags": {
         "OS_Version": "Ubuntu",
