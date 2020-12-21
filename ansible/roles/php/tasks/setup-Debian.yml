@@ -1,0 +1,107 @@
+---
+- name: Remove PHP old versions
+  apt:
+    name: php*
+    state: absent
+    purge: yes
+
+- name: Add PHP Repository
+  apt_repository:
+    repo: ppa:ondrej/php
+
+- name: Update PHP repo
+  apt:
+    name: php{{ php_version }}
+    state: latest
+    update_cache: yes
+
+- name: Install PHP
+  apt:
+    name:
+      - php{{ php_version }}
+      - php{{ php_version }}-fpm
+      - php{{ php_version }}-bcmath
+      - php{{ php_version }}-bz2
+      - php{{ php_version }}-cli
+      - php{{ php_version }}-common
+      - php{{ php_version }}-curl
+      - php{{ php_version }}-gd
+      # - php{{ php_version }}-intl
+      - php{{ php_version }}-json
+      - php{{ php_version }}-mbstring
+      - php{{ php_version }}-mysql
+      - php{{ php_version }}-opcache
+      - php{{ php_version }}-readline
+      - php{{ php_version }}-xml
+      - php{{ php_version }}-zip
+      - php{{ php_version }}-memcached
+      - php{{ php_version }}-redis
+      # - php-igbinary
+     #  - php-memcached
+      # - php-msgpack
+      # - php-pear
+      # - php-redis
+      # - newrelic-php5
+
+- name: Remove old init file
+  file:
+    path: /etc/init.d/php{{ php_version }}-fpm
+    state: absent
+
+- name: Configure init file
+  template:
+    src: ../templates/php-fpm.j2
+    dest: /etc/init.d/php-fpm
+    owner: root
+    group: root
+    mode: 755
+
+- name: Configurando php.conf
+  template:
+    src: ../templates/php.conf.j2
+    dest: "{{ nginx_conf_path }}"
+    mode: 0644
+
+
+
+
+- name: Creating PHP-FPM file
+  template:
+    src: ../templates/php-fpm.conf.j2
+    dest: "{{ php_fpm_file_dir }}/php-fpm.conf"
+    owner: root
+    group: root
+    mode: 644
+
+- name: Creating WWW file
+  template:
+    src: ../templates/www.conf.j2
+    dest: "{{ www_file_dir }}/www.conf"
+    owner: root
+    group: root
+    mode: 644
+
+- name: Creating PHP service file
+  template:
+    src: ../templates/php7.3-fpm.service.j2
+    dest: "{{ php_service_dir }}/php7.3-fpm.service"
+    owner: root
+    group: root
+    mode: 644
+
+- name: Removing old symlink
+  shell: rm -f /lib/systemd/system/php-fpm.service
+
+- name: Creating new symlink
+  file:
+    src: /lib/systemd/system/php7.3-fpm.service
+    dest: /lib/systemd/system/php-fpm.service
+    state: link
+
+- name: Reloading Systemctl
+  shell: systemctl daemon-reload
+
+- name: Ensure FPM service is running
+  service:
+    name: php-fpm
+    state: restarted

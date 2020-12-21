@@ -1,0 +1,7 @@
+---
+- name: apt-get update
+  apt:
+    update-cache: yes
+    
+- name: Install Git package
+  apt: name=git state=present

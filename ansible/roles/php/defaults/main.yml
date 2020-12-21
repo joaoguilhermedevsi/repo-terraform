@@ -1,0 +1,32 @@
+---
+# PHP default version
+php_version: "7.3"
+
+# PHP Directories
+php_fpm_file_dir: /etc/php/{{ php_version }}/fpm
+www_file_dir: /etc/php/{{ php_version }}/fpm/pool.d
+php_ini_dir: /etc/php/7.3/fpm
+php_service_dir: /lib/systemd/system
+
+# FPM presets
+www_user: www-data
+www_group: www-data
+www_listen_owner: www-data
+www_listen_group: www-data
+www_listen: 127.0.0.1:9000
+www_listen_allowed_clients: 127.0.0.1
+www_php_admin_flag: True
+www_php_admin_value_error_log: /var/log/php-fpm/www-slow.log
+www_php_admin_value_memory_limit: 300M
+www_php_value_session_save_handler: /var/lib/php/session
+www_php_value_session_save_path: /var/lib/php/session
+www_php_value_soap_wsdl_cache_dir: /var/lib/php/wsdlcache
+www_pm: ondemand
+www_pm_max_children: 150
+www_pm_max_requests: 500
+www_pm_process_idle_timeout: 5s
+www_slowlog: /var/log/php-fpm/www-slow.log
+www_clear_env: no
+www_env_encypt_key: $ENCRYPT_KEY
+www_pm_status_path: /status
+nginx_conf_path: /etc/nginx/php.conf

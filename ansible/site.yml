@@ -1,0 +1,17 @@
+---
+- name: Install Git,Nginx, PHP, Important Packages  and projects
+  hosts: all
+  become: yes
+  user: ubuntu
+  gather_facts: true
+
+  pre_tasks:
+    - name: gathering ec2 instance metadata
+      action: ec2_metadata_facts
+      
+  roles:
+    - git
+    - patchs
+    - nginx
+    - php
+    - ntp

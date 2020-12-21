@@ -1,0 +1,4 @@
+- name: Checking file test nginx.conf
+  shell: nginx -t
+  changed_when: false
+  tags: nginx

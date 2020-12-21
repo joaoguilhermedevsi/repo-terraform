@@ -1,0 +1,5 @@
+---
+nginx_conf_path: /etc/nginx/nginx.conf
+nginx_service: nginx
+nginx_include: vhosts/*.conf;
+nginx_default_path: /etc/nginx

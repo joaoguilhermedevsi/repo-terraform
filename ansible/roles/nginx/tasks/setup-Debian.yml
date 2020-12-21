@@ -1,0 +1,82 @@
+---
+
+################################################################################
+#                        Configuracao Nginx
+################################################################################
+
+- name: Criando os Diretorios
+  file:
+    path: "{{ item }}"
+    state: directory
+    mode: '0755'
+    owner: root
+    group: root
+  loop:
+    - "{{ nginx_default_path }}/common"
+    - "{{ nginx_default_path }}/locations"
+    - "{{ nginx_default_path }}/vhosts"
+    - "{{ nginx_default_path }}/backends"
+  tags: nginx
+
+- name: Configurando o Nginx 
+  template:
+    src: nginx.conf.j2
+    dest: "{{ nginx_conf_path }}"
+    mode: 0644
+  notify: restart nginx
+  tags: nginx
+
+#- name: Copiando arquivo php.conf
+#  template:
+#    src: php.conf
+#    dest: "{{ nginx_conf_path }}"
+#    mode: 0644
+#  tags: nginx
+  
+
+
+################################################################################
+#                        Instalacao Nginx
+################################################################################
+
+- name: Instalando os Pre-Requisitos
+  apt:
+    pkg:
+      - curl 
+      - gnupg2 
+      - ca-certificates 
+      - lsb-release
+    state: latest
+  tags: nginx
+
+- name: Download do Repositorio do Nginx
+  shell: echo "deb http://nginx.org/packages/ubuntu `lsb_release -cs` nginx" \ | tee /etc/apt/sources.list.d/nginx.list
+  register: repository
+  tags: nginx
+
+- name: Importando as chaves oficiais do Nginx
+  shell: curl -fsSL https://nginx.org/keys/nginx_signing.key | apt-key add -       
+  tags: nginx
+
+- name: Checking the appropriate key
+  shell: apt-key fingerprint ABF5BD827BD9BF62
+  register: key
+  tags: nginx
+
+- name: Output
+  debug: msg="{{ key.stdout_lines }}"
+  tags: nginx  
+
+- name: Instalando o Nginx
+  apt: 
+    name: "{{ nginx_service }}"
+    state: latest
+    update_cache: yes
+  tags: nginx
+
+- name: Restartando o Nginx
+  systemd:
+    name: "{{ nginx_service }}"
+    state: started
+    enabled: yes
+  tags: nginx
